@@ -9,7 +9,6 @@ public class FileTransfer{
             try {
                 server.run();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else if (args.length==3){
@@ -40,10 +39,13 @@ public class FileTransfer{
             try (InputStream in = new FileInputStream(new File(filename))){
                 byte[] data= new byte[1024];
                 int l= in.read(data,0,1024);
+                OutputStream out = client.getOutputStream();
                 while (l!= -1) {
-                    OutputStream out = client.getOutputStream();
                     out.write(data,0,l);
+                    l= in.read(data,0,1024);
                 }
+                out.close();
+                in.close();
             } catch (IOException e){
                 System.err.println(e);
             }
@@ -62,6 +64,9 @@ public class FileTransfer{
             ServerSocket fileServer = new ServerSocket(socketNum);
             System.out.println("Serveur lancé sur le port : "+ socketNum);
             System.out.println("Ecoute...");
+            Socket socketClient = fileServer.accept();
+            OutputStream out = 
+            System.out.println("Connexion : "+socketClient.getInetAddress());
         }
     }
 }
